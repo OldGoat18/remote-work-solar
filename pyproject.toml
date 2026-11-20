@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wlpr"
+version = "0.1.0"
+description = "Tokyo WFH residential low-voltage load × rooftop-PV reproduction package"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy", "pandas", "duckdb", "scipy", "matplotlib", "pyarrow", "pyyaml", "openpyxl", "pyshp>=2.3",
+  "numba", "requests",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

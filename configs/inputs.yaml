@@ -1,0 +1,58 @@
+# Logical input registry: id -> {tier, path}. Resolved by src/wlpr/io/paths.input_path().
+# tier is one of: raw (data/raw/), frozen (data/frozen/), derived (data/derived/).
+# This file is populated incrementally as each engine module is ported; every entry must also
+# appear in data/frozen/manifests/input_manifest.csv with a sha256 (00_verify_inputs reconciles them).
+
+# ---- raw external restricted sources (~360 GB; staged once via tools/stage_raw.ps1) ----
+raw:
+  mobility_lm00020_tar: {tier: raw, path: mobility/LM00020.tar}
+  btm_selfconsumption_zip: {tier: raw, path: btm/Hitotsubashi_SelfConsumption_LV.zip}
+  stdstats_zip: {tier: raw, path: stdstats/standard_statistics.zip}
+  # The PV100 checkpoint tree belongs to the excluded technical-potential sensitivity
+  # subsystem. The current observed-stock kernel mainline does not read it.
+  estat_T001194_11: {tier: raw, path: public/estat/tblT001194H11.zip}
+  estat_T001194_12: {tier: raw, path: public/estat/tblT001194H12.zip}
+  estat_T001194_13: {tier: raw, path: public/estat/tblT001194H13.zip}
+  estat_T001194_14: {tier: raw, path: public/estat/tblT001194H14.zip}
+  estat_T001101_11: {tier: raw, path: public/estat/tblT001101H11.zip}
+  estat_T001101_12: {tier: raw, path: public/estat/tblT001101H12.zip}
+  estat_T001101_13: {tier: raw, path: public/estat/tblT001101H13.zip}
+  estat_T001101_14: {tier: raw, path: public/estat/tblT001101H14.zip}
+  estat_T001108_11: {tier: raw, path: public/estat/tblT001108H11.zip}
+  estat_T001108_12: {tier: raw, path: public/estat/tblT001108H12.zip}
+  estat_T001108_13: {tier: raw, path: public/estat/tblT001108H13.zip}
+  estat_T001108_14: {tier: raw, path: public/estat/tblT001108H14.zip}
+  estat_T001193_11: {tier: raw, path: public/estat/tblT001193H11.zip}
+  estat_T001193_12: {tier: raw, path: public/estat/tblT001193H12.zip}
+  estat_T001193_13: {tier: raw, path: public/estat/tblT001193H13.zip}
+  estat_T001193_14: {tier: raw, path: public/estat/tblT001193H14.zip}
+  meteostat_hourly_47626: {tier: raw, path: public/meteostat/47626.csv.gz}
+  meteostat_hourly_47662: {tier: raw, path: public/meteostat/47662.csv.gz}
+  meteostat_hourly_47670: {tier: raw, path: public/meteostat/47670.csv.gz}
+  meteostat_hourly_47682: {tier: raw, path: public/meteostat/47682.csv.gz}
+  repos_R3_pv_grid500: {tier: raw, path: public/repos/R3_pv_grid500.zip}
+
+# ---- frozen snapshot inputs (~12 GB; sha256-pinned) ----
+frozen:
+  # census / labour / housing (T001xxx), weather (AMeDAS/ERA5), LV load, telework survey, PV sources,
+  # closure surface, locked LV-twin baseline.
+  lv_twin_pred_pref_v4:    {tier: frozen, path: locked_baselines/daily_lv_twin_pred_pref_v4.parquet}
+  # --- baseline load-fit decomposition (step 02) ---
+  lv_load_hourly:          {tier: frozen, path: raw_sources/stdstats_hourly_load.parquet}
+  weather_amedas:          {tier: frozen, path: raw_sources/amedas_47prefs_hourly.parquet}
+  census_housing_T001194:  {tier: frozen, path: raw_sources/estat_r2_census_500m_T001194_project_mesh_join_check.parquet}
+  closure_surface_share:   {tier: frozen, path: locked_baselines/_share_tmp.parquet}
+  mesh_denominator_panel:  {tier: frozen, path: normalized_inputs/step11g_1_mesh_denominator_panel.parquet}
+  demographic_mesh_panel:  {tier: frozen, path: normalized_inputs/step11h_0_demographic_mesh_panel.parquet}
+  # --- survey anchor (step 03) ---
+  wfh_survey_pref_rates:   {tier: frozen, path: normalized_inputs/wfh_survey_anchored_pref.parquet}
+  # --- wfh_state cell-native a_dwfh engine (steps 06/07): 15-min time-use activity-rate curves ---
+  timeuse_15min:           {tier: frozen, path: normalized_inputs/timeuse_activity_rate_15min.parquet}
+  # --- R3 social layer (step 12): mesh -> dominant municipality bridge (REPOS rooftop B_PG). Built by the
+  #     EXCLUDED PV subsystem (repos_mesh_munic.py), so staged here as a frozen snapshot, not regenerated. ---
+  repos_mesh_munic_bpg:    {tier: frozen, path: pv/repos_mesh_munic_bpg.parquet}
+  # --- validation suite (step 15): raw-derived daily pref presence panel (occupancy validation, never kWh) ---
+  mobility_presence_panel: {tier: frozen, path: raw_sources/mobility_pref_daily_presence.csv}
+
+# ---- derived snapshot (built by the pipeline; verified by sha256 when run_from=frozen) ----
+derived: {}
