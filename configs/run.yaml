@@ -1,0 +1,18 @@
+# Run configuration for the wlpr reproduction package.
+#
+# run_from:
+#   frozen  (default) use privately supplied prepared assets and verify their SHA-256 hashes
+#   raw     regenerate derived products from privately supplied source and prepared assets
+run_from: frozen
+
+# Study scope (Tokyo metropolitan: Saitama/Chiba/Tokyo/Kanagawa; winter validation window Oct-Feb).
+prefs: ["11", "12", "13", "14"]
+window_yms: ["202310", "202311", "202312", "202401", "202402"]
+window_months: [10, 11, 12, 1, 2]
+
+# Engine resources (DuckDB streaming over the partitioned baseline_p0 ledger).
+duckdb_memory_limit: "10GB"
+duckdb_threads: 8
+
+# Survey-central anchor for the S1 WFH window total (MWh); a_dwfh emit guards against drift.
+s1_adwfh_window_total_mwh: 12534.9

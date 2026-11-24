@@ -1,0 +1,78 @@
+# Public raw sources used to rebuild the census, weather and REPOS inputs.
+# Hashes pin the files verified on 2026-07-29; downloads are refused if content changes.
+census:
+  table: T001194
+  prefectures:
+    "11":
+      input_id: estat_T001194_11
+      url: https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001194&code=11&downloadType=2
+      sha256: 2ad9a8b9817228168aafed7225b80ba150f01f2011344a7be872786e798e65b5
+    "12":
+      input_id: estat_T001194_12
+      url: https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001194&code=12&downloadType=2
+      sha256: 17bc1a66c93606bbdbc54171ea9d487f2ac5b72146af9c18033d8afa4c92f6d4
+    "13":
+      input_id: estat_T001194_13
+      url: https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001194&code=13&downloadType=2
+      sha256: 00cc78f4157dde1de173812bc15b99859e80e8d41b8d9c8a7ec47a5396f7d0a2
+    "14":
+      input_id: estat_T001194_14
+      url: https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001194&code=14&downloadType=2
+      sha256: 4fee3e76dd7d61ef35fda77767da3b303fe2d3ebbb73d7ff3d3ba53d4e99b99d
+
+# Additional public 500 m census tables used to reconstruct the normalized
+# demographic and load-denominator interfaces omitted from the original package.
+normalized_census:
+  tables:
+    T001101:
+      prefectures:
+        "11": {input_id: estat_T001101_11, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001101&code=11&downloadType=2", sha256: c781fe1b20516e14e324435b86122f184cedd180b0d8506e7c0838aac942f906}
+        "12": {input_id: estat_T001101_12, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001101&code=12&downloadType=2", sha256: 8c2430f70226732b01ade44f5e5627d97694ac620f34cdb197aa00840e5621b9}
+        "13": {input_id: estat_T001101_13, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001101&code=13&downloadType=2", sha256: 072b72caef303140c135a5baf787246dded4389f99790f7e8b40094a0fc8e7bd}
+        "14": {input_id: estat_T001101_14, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001101&code=14&downloadType=2", sha256: 073ff27f7756c2c18a4ba3db3b2636b88e3146e873c5c17560432cf6bafaba39}
+    T001108:
+      prefectures:
+        "11": {input_id: estat_T001108_11, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001108&code=11&downloadType=2", sha256: 8df9deea1f600aed3ddf5507a309be08180808e65f4d1b7fb339ea0d8bc93be9}
+        "12": {input_id: estat_T001108_12, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001108&code=12&downloadType=2", sha256: 0f9e03c24915074c46c230bd4745a26419680d66a00eb8bb1184478d01ef59a3}
+        "13": {input_id: estat_T001108_13, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001108&code=13&downloadType=2", sha256: a27828265100247adb6a3ae64dd031c62a34c963535ffdada2d8a47108cdefcb}
+        "14": {input_id: estat_T001108_14, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001108&code=14&downloadType=2", sha256: bdb05c49d9bc45a00dea678fce88878e5b8873dfc4b53e86e9bdc45c96b21680}
+    T001193:
+      prefectures:
+        "11": {input_id: estat_T001193_11, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001193&code=11&downloadType=2", sha256: 25ef9f07d32d0126bb628014a39a7d9a1331eed4d85a0e7f2a6f6cafe15c2e1a}
+        "12": {input_id: estat_T001193_12, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001193&code=12&downloadType=2", sha256: 9c5fc8d5e46c63c340f102324cdd4195ae661e90b64dff1fa172cac4b16f2b57}
+        "13": {input_id: estat_T001193_13, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001193&code=13&downloadType=2", sha256: 7b90f8a67f8bc1336478216ca9c589db8bc7c74057a866b663e2664f8a26c1d7}
+        "14": {input_id: estat_T001193_14, url: "https://www.e-stat.go.jp/gis/statmap-search/data?statsId=T001193&code=14&downloadType=2", sha256: 05fc9d2e0da02cde4e57bffde018bb7ed829726fffd023b70dd9df58e06b83a4}
+
+weather:
+  # The legacy file is named AMeDAS, but its UTC timestamps, km/h wind and
+  # column vocabulary identify the normalized source as Meteostat Hourly.
+  start: 2018-01-01
+  end: 2024-12-31
+  stations:
+    "47626":
+      input_id: meteostat_hourly_47626
+      station: "埼玉熊谷"
+      url: https://bulk.meteostat.net/v2/hourly/47626.csv.gz
+      sha256: 4135841d49fe8d3d0279a772bd62aefea856e6f5324566bc643678af270b17b5
+    "47662":
+      input_id: meteostat_hourly_47662
+      station: "東京"
+      url: https://bulk.meteostat.net/v2/hourly/47662.csv.gz
+      sha256: 742748fd25240c028e78604fee48cc72248f3107e318f26dcd114b8f0638fc48
+    "47670":
+      input_id: meteostat_hourly_47670
+      station: "神奈川横浜"
+      url: https://bulk.meteostat.net/v2/hourly/47670.csv.gz
+      sha256: 8e93910ae06c7dd8bc63832a56b16138349a842c06f71a21f28f907c9e197450
+    "47682":
+      input_id: meteostat_hourly_47682
+      station: "千葉"
+      url: https://bulk.meteostat.net/v2/hourly/47682.csv.gz
+      sha256: c0d999782339ef8ed82813355ffcb009b6b01b57da098ab4c3b5c853cac46331
+
+repos:
+  version: R3
+  input_id: repos_R3_pv_grid500
+  url: https://repos.env.go.jp/web/dat/mounted/potential/sunlight/building_land/R3_pv_grid500.zip
+  sha256: 0f02c67b12123cc7cf1e696be1b9e2b8ac911150db971e708f71031c49e2fab5
+  four_pref_building_capacity_gw: 76.854748

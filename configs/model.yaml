@@ -1,0 +1,49 @@
+# Model parameters (engineering priors + scenario taxonomy). Ported from the source project's
+# configuration and WFH-state engine. Consult the accompanying methods for provenance.
+
+# ---- WFH sub-component engineering unit powers (cell-native a_dwfh engine) ----
+# device ∝ WFH persons (additive); lighting/lunch/heating/cooling ∝ WFH households × vacancy (shared).
+unit_powers:
+  device_kw: 0.090        # office device, per WFH person
+  light_kw: 0.050         # lighting, per WFH household (darkness-gated)
+  lunch_kwh: 0.30         # midday cooking event, per WFH household
+  heat_kw: 0.260          # heating room power, per household × heatloss × g_hdd
+  cool_kw: 0.340          # cooling room power, per household × heatloss × g_cdd
+  work_hours: 8.0
+
+# ---- future rooftop-PV expansion (alpha = REPOS rooftop adoption increment) ----
+pv:
+  alpha_central: 0.15     # 15% REPOS rooftop adoption for the future-PV-AI scenario
+  midday_window_slots: [18, 30]   # 09:00-15:00 PV self-consumption window (slots)
+
+# ---- WFH intensity / frequency ----
+intensity:
+  base: 0.349
+  by_frequency: {observed: 0.349, "2-3 days": 0.50, "3-4 days": 0.70, high: 0.70}
+
+# Recovered from the released wfh_anchor_scorecard. These are model inputs,
+# not newly estimated values; the source survey citation still needs restoration.
+survey_anchor:
+  pref_rates:
+    "11": 0.2167795202255393
+    "12": 0.2393040586680918
+    "13": 0.3979342179797761
+    "14": 0.30030693437078454
+
+# Scenario taxonomy (S1-S10) and the industry/occupation lift levers live in
+# the scenario-downscaling implementation, with provenance in the accompanying methods.
+
+# ---- load-fit baseline decomposition (ported from source model.yaml; FROZEN choices) ----
+heat_loss:
+  HL_detached: 2.0
+  HL_rowhouse: 1.5
+  HL_apartment: 1.0
+weather:
+  hdd_base_c: 18.0
+  cdd_base_c: 24.0
+  pop_weight_own_station: {"11": 0.3, "12": 0.3, "13": 1.0, "14": 1.0}
+agent_prior:
+  pooling_tau: 0.2        # ridge / partial-pooling toward the global NNLS mean
+  env_bumps: 13           # non-thermal basis bumps across the day
+imputation:
+  missing_housing_census: pref_mean_mix   # flagged imputed_mix=1

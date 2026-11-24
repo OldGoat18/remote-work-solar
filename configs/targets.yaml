@@ -1,0 +1,54 @@
+# targets.yaml — the "top-journal target line" (supervisor-set). MODEL_QA_DASHBOARD reads these and emits PASS/WARN/FAIL.
+# A metric is PASS if it meets `pass`, WARN if it meets `warn` but not `pass`, else FAIL. Direction: 'max' = lower is
+# better (value must be <= threshold); 'min' = higher is better (value must be >= threshold); 'abs_max' = |value| <= t.
+
+# `floor: true` marks a per-day metric known (by the BMS-CAL step-3 ablation) to sit at the day-variability floor:
+# if it only reaches WARN/FAIL it is reported as FLOOR (accepted uncertainty), NOT a fixable gap. Its mean-profile
+# companion is the shape-fidelity metric.
+aggregate:
+  daily_nmae:        {dir: max,     pass: 0.03,  warn: 0.04, floor: true}
+  monthly_profile_nmae: {dir: max,  pass: 0.02,  warn: 0.03}
+  energy_bias:       {dir: abs_max, pass: 0.01,  warn: 0.02}
+  peak_mag_err:      {dir: abs_max, pass: 0.03,  warn: 0.05}
+  peak_time_within1: {dir: min,     pass: 0.80,  warn: 0.70}
+  ramp_err:          {dir: abs_max, pass: 0.10,  warn: 0.15}
+
+pref:
+  daily_nmae_worst:  {dir: max,     pass: 0.05,  warn: 0.06}
+  energy_bias_worst: {dir: abs_max, pass: 0.02,  warn: 0.03}
+  peak_mag_err_worst: {dir: abs_max, pass: 0.05, warn: 0.07}
+
+cell:
+  weighted_nmae:     {dir: max,     pass: 0.04,  warn: 0.05, floor: true}
+  high_demand_nmae:  {dir: max,     pass: 0.05,  warn: 0.06}
+  p90_nmae:          {dir: max,     pass: 0.08,  warn: 0.10}
+
+grid:
+  weighted_nmae:     {dir: max,     pass: 0.06,  warn: 0.07, floor: true}
+  median_nmae:       {dir: max,     pass: 0.06,  warn: 0.07}
+  p75_nmae:          {dir: max,     pass: 0.08,  warn: 0.10}
+  p90_nmae:          {dir: max,     pass: 0.12,  warn: 0.15}
+  high_demand_top20_nmae: {dir: max, pass: 0.07, warn: 0.09}
+
+daypart:
+  morning_nmae:      {dir: max,     pass: 0.05,  warn: 0.07}
+  midday_nmae:       {dir: max,     pass: 0.04,  warn: 0.06, floor: true}   # per-day (day-scatter floor ~0.05)
+  midday_meanprofile_nmae: {dir: max, pass: 0.04, warn: 0.05}  # mean daily profile (true shape fidelity)
+  evening_nmae:      {dir: max,     pass: 0.05,  warn: 0.07}
+  late_night_nmae:   {dir: max,     pass: 0.05,  warn: 0.07}
+  valley_err:        {dir: abs_max, pass: 0.05,  warn: 0.08}
+  evening_ramp_err:  {dir: abs_max, pass: 0.12,  warn: 0.18}
+
+component:
+  hvac_hdd_corr:     {dir: min,     pass: 0.95,  warn: 0.90}
+  detached_hvac_corr: {dir: min, pass: 0.50, warn: 0.40}
+  wfh_ranking_ok:    {dir: min,     pass: 1.0,   warn: 1.0}   # 1 if Tokyo>Kanagawa>Chiba>Saitama else 0
+
+qa_redlines:        # boolean gates: PASS iff 1
+  closure_exact:        {dir: min, pass: 1.0, warn: 1.0}
+  zero_null_components: {dir: min, pass: 1.0, warn: 1.0}
+  zero_negative_components: {dir: min, pass: 1.0, warn: 1.0}
+  scorecard_synced:     {dir: min, pass: 1.0, warn: 1.0}
+  hl_d_canonical:       {dir: min, pass: 1.0, warn: 1.0}
+  wfh_not_plug_kwh:     {dir: min, pass: 1.0, warn: 1.0}
+  pv_not_in_load:       {dir: min, pass: 1.0, warn: 1.0}

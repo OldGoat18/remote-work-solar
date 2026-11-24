@@ -1,0 +1,58 @@
+# Logical input registry: id -> {tier, asset}. Locations are supplied privately.
+# The raw, frozen and derived labels describe provenance tiers.
+# Every registered input must also have a privately held integrity record
+# with its source identity and SHA-256 hash.
+
+# ---- restricted external sources, supplied separately by the operator ----
+raw:
+  mobility_lm00020_tar: {tier: raw, asset: asset_0204}
+  btm_selfconsumption_zip: {tier: raw, asset: asset_0205}
+  stdstats_zip: {tier: raw, asset: asset_0206}
+  # The PV100 checkpoint tree belongs to the excluded technical-potential sensitivity
+  # subsystem. The current observed-stock kernel mainline does not read it.
+  estat_T001194_11: {tier: raw, asset: asset_0207}
+  estat_T001194_12: {tier: raw, asset: asset_0208}
+  estat_T001194_13: {tier: raw, asset: asset_0209}
+  estat_T001194_14: {tier: raw, asset: asset_0210}
+  estat_T001101_11: {tier: raw, asset: asset_0211}
+  estat_T001101_12: {tier: raw, asset: asset_0212}
+  estat_T001101_13: {tier: raw, asset: asset_0213}
+  estat_T001101_14: {tier: raw, asset: asset_0214}
+  estat_T001108_11: {tier: raw, asset: asset_0215}
+  estat_T001108_12: {tier: raw, asset: asset_0216}
+  estat_T001108_13: {tier: raw, asset: asset_0217}
+  estat_T001108_14: {tier: raw, asset: asset_0218}
+  estat_T001193_11: {tier: raw, asset: asset_0219}
+  estat_T001193_12: {tier: raw, asset: asset_0220}
+  estat_T001193_13: {tier: raw, asset: asset_0221}
+  estat_T001193_14: {tier: raw, asset: asset_0222}
+  meteostat_hourly_47626: {tier: raw, asset: asset_0223}
+  meteostat_hourly_47662: {tier: raw, asset: asset_0224}
+  meteostat_hourly_47670: {tier: raw, asset: asset_0225}
+  meteostat_hourly_47682: {tier: raw, asset: asset_0226}
+  repos_R3_pv_grid500: {tier: raw, asset: asset_0227}
+
+# ---- frozen snapshot inputs (~12 GB; sha256-pinned) ----
+frozen:
+  # census / labour / housing (T001xxx), weather (AMeDAS/ERA5), LV load, telework survey, PV sources,
+  # closure surface, locked LV-twin baseline.
+  lv_twin_pred_pref_v4:    {tier: frozen, asset: asset_0228}
+  # --- baseline load-fit decomposition (step 02) ---
+  lv_load_hourly:          {tier: frozen, asset: asset_0229}
+  weather_amedas:          {tier: frozen, asset: asset_0129}
+  census_housing_T001194:  {tier: frozen, asset: asset_0127}
+  closure_surface_share:   {tier: frozen, asset: asset_0230}
+  mesh_denominator_panel:  {tier: frozen, asset: asset_0231}
+  demographic_mesh_panel:  {tier: frozen, asset: asset_0232}
+  # --- survey anchor (step 03) ---
+  wfh_survey_pref_rates:   {tier: frozen, asset: asset_0126}
+  # --- wfh_state cell-native a_dwfh engine (steps 06/07): 15-min time-use activity-rate curves ---
+  timeuse_15min:           {tier: frozen, asset: asset_0233}
+  # --- R3 social layer (step 12): mesh -> dominant municipality bridge (REPOS rooftop B_PG). Built by the
+  #     EXCLUDED PV subsystem (repos_mesh_munic.py), so staged here as a frozen snapshot, not regenerated. ---
+  repos_mesh_munic_bpg:    {tier: frozen, asset: asset_0132}
+  # --- validation suite (step 15): raw-derived daily pref presence panel (occupancy validation, never kWh) ---
+  mobility_presence_panel: {tier: frozen, asset: asset_0234}
+
+# ---- derived snapshot (built by the pipeline; verified by sha256 when run_from=frozen) ----
+derived: {}
